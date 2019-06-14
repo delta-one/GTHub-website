@@ -107,7 +107,7 @@ export default {
 	},
 	methods: {
 		async sendRequest() {
-			const res = await this.$axios.$get('/api/wecdata');
+			const res = await this.$axios.$get('/api/wecdata', {crossdomain: true});
 			this.data = res.data;
 		},
 		fetchData: function() {
