@@ -109,6 +109,8 @@ export default {
 						this.racestate = 'RUNNING'; break;
 					case 'Chk':
 						this.racestate = 'FINISHED'; break;
+					case 'full_yellow':
+						this.racestate = 'FCY'; break;
 					case 'off':
 						this.racestate = 'NOT RUNNING'; break;
 					default:
@@ -151,6 +153,8 @@ export default {
 					return 'state-green';
 				case 'Chk':
 					return 'state-finished';
+				case 'full_yellow':
+					return 'state-yellow';
 				case 'off':
 					return 'state-off';
 				default:
@@ -308,6 +312,7 @@ body {
 }
 .state-yellow {
 	background-color: yellow;
+	color: black;
 }
 .state-red {
 	background-color: red;
