@@ -87,7 +87,7 @@ export default {
 			data: [],
 			dataLoaded: false,
 			showError: false,
-			updateInterval: 30,
+			updateInterval: 60,
 			elapsed: '',
 			racestate: '',
 			remaining: '',
@@ -129,7 +129,7 @@ export default {
 				this.data = JSON.parse(res.data);
 				this.dataLoaded = true;
 				this.showError = false;
-				this.updateInterval = 30;
+				this.updateInterval = 60;
 			}, () => {
 				// console.log(err);
 				this.showError = true;
@@ -163,7 +163,7 @@ export default {
 			let hours = Math.floor(this.remaining / 3600);
 			if (hours < 10)
 				hours = '0' + hours;
-			let minutes = Math.floor(this.remaining % (60*60));
+			let minutes = Math.floor((this.remaining / 60) % 60);
 			if (minutes < 10)
 				minutes = '0' + minutes;
 			let seconds = this.remaining % 60;

@@ -13,10 +13,11 @@ module.exports.getWecData = (req, res) => {
 
 setInterval(() => {
 	fetchData()
-}, 30 * 1000);
+}, 60 * 1000);
 
 fetchData = function() {
-	https.get('https://storage.googleapis.com/fiawec-prod/assets/live/WEC/__data.json', response => {
+	let rn = Math.random();
+	https.get('https://storage.googleapis.com/fiawec-prod/assets/live/WEC/__data.json?json=' + rn, response => {
 		let tmp = '';
 
 		// A chunk of data has been recieved
