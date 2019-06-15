@@ -113,6 +113,8 @@ export default {
 						this.racestate = 'LOCAL YELLOW'; break;
 					case 'full_yellow':
 						this.racestate = 'FCY'; break;
+					case 'safety_car':
+						this.racestate = 'SAFETY CAR'; break;
 					case 'off':
 						this.racestate = 'NOT RUNNING'; break;
 					default:
@@ -159,6 +161,8 @@ export default {
 					return 'state-localyellow';
 				case 'full_yellow':
 					return 'state-yellow';
+				case 'safety_car':
+					return 'state-sc';
 				case 'off':
 					return 'state-off';
 				default:
@@ -327,6 +331,10 @@ body {
 }
 .state-off {
 	background-color: black;
+}
+.state-sc {
+	background-color: silver;
+	color: black;
 }
 .state-finished {
 	background-image:
