@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-if="dataLoaded">
 	<div class="md-layout">
 		<div class="md-layout-item md-size-10 text-center text-info">
 			{{ elapsed }} elapsed
@@ -11,12 +11,17 @@
 			{{ remainingTime() }} remaining
 		</div>
 	</div>
-	<div class="class-badges">
-		<md-chip md-clickable @click.native="badgeClicked('all')" :class="clb_all ? 'all-bg' : ''">All classes</md-chip>
-		<md-chip md-clickable @click.native="badgeClicked('p1')" :class="clb_p1 ? 'lmp1-bg' : ''">LMP1</md-chip>
-		<md-chip md-clickable @click.native="badgeClicked('p2')" :class="clb_p2 ? 'lmp2-bg' : ''">LMP2</md-chip>
-		<md-chip md-clickable @click.native="badgeClicked('gp')" :class="clb_gp ? 'gtepro-bg' : ''">GTE-Pro</md-chip>
-		<md-chip md-clickable @click.native="badgeClicked('ga')" :class="clb_ga ? 'gteam-bg' : ''">GTE-Am</md-chip>
+	<div class="md-layout">
+		<div class="md-layout-item class-badges">
+			<md-chip md-clickable @click.native="badgeClicked('all')" :class="clb_all ? 'all-bg' : ''">All classes</md-chip>
+			<md-chip md-clickable @click.native="badgeClicked('p1')" :class="clb_p1 ? 'lmp1-bg' : ''">LMP1</md-chip>
+			<md-chip md-clickable @click.native="badgeClicked('p2')" :class="clb_p2 ? 'lmp2-bg' : ''">LMP2</md-chip>
+			<md-chip md-clickable @click.native="badgeClicked('gp')" :class="clb_gp ? 'gtepro-bg' : ''">GTE-Pro</md-chip>
+			<md-chip md-clickable @click.native="badgeClicked('ga')" :class="clb_ga ? 'gteam-bg' : ''">GTE-Am</md-chip>
+		</div>
+		<div class="md-layout-item text-right">
+			Last update: {{ new Date().toLocaleString() }}
+		</div>
 	</div>
 	<md-table v-if="data.entries !== undefined">
 		<md-table-row>
@@ -51,7 +56,7 @@
 			<md-table-cell>{{ e.team }}</md-table-cell>
 			<md-table-cell>{{ e.driver }}</md-table-cell>
 			<md-table-cell>{{ e.car }}</md-table-cell>
-			<md-table-cell>{{ e.gap }}</md-table-cell>
+			<md-table-cell>{{ e.ranking === 1 ? e.lap + ' laps' : e.gap }}</md-table-cell>
 			<md-table-cell>{{ e.gapPrev }}</md-table-cell>
 			<md-table-cell>{{ e.classGap }}</md-table-cell>
 			<md-table-cell>{{ e.classGapPrev }}</md-table-cell>
@@ -67,6 +72,12 @@
 		</md-table-row>
 	</md-table>
 </div>
+<div v-else-if="showError" class="text-center text-info">
+	Error retrieving data. Please try again later.
+</div>
+<div v-else class="text-center text-info">
+	Waiting for data.
+</div>
 </template>
 
 <script>
@@ -74,6 +85,9 @@ export default {
 	data: function() {
 		return {
 			data: [],
+			dataLoaded: false,
+			showError: false,
+			updateInterval: 30,
 			elapsed: '',
 			racestate: '',
 			remaining: '',
@@ -109,13 +123,24 @@ export default {
 	},
 	methods: {
 		async sendRequest() {
-			const res = await this.$axios.$get('/api/wecdata', {crossdomain: true});
-			this.data = JSON.parse(res.data);
+			// const res = await this.$axios.$get('/api/wecdata', {crossdomain: true});
+			this.$axios.$get('/api/wecdata', {crossdomain: true})
+			.then(res => {
+				this.data = JSON.parse(res.data);
+				this.dataLoaded = true;
+				this.showError = false;
+				this.updateInterval = 30;
+			}, () => {
+				// console.log(err);
+				this.showError = true;
+				this.dataLoaded = false;
+				this.updateInterval = 180;
+			});
 		},
 		fetchData: function() {
 			setInterval(() => {
 				this.sendRequest();
-			}, 30 * 1000);
+			}, this.updateInterval * 1000);
 		},
 		racestateBg: function() {
 			if (this.data.params === undefined)
@@ -133,7 +158,7 @@ export default {
 			}
 		},
 		remainingTime: function() {
-			if (this.data.params === undefined)
+			if (this.data.params === undefined || this.remaining <= 0)
 				return '00:00:00';
 			let hours = Math.floor(this.remaining / 3600);
 			if (hours < 10)
@@ -263,7 +288,11 @@ body {
 
 .text-center {
 	text-align: center;
-	vertical-align: middle;
+	margin: auto;
+}
+.text-right {
+	text-align: right;
+	margin: auto;
 }
 .text-info {
 	padding: 0.4em 0 0.4em 0;
