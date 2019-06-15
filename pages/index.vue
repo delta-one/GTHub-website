@@ -87,7 +87,7 @@ export default {
 			data: [],
 			dataLoaded: false,
 			showError: false,
-			updateInterval: 60,
+			updateInterval: 30,
 			elapsed: '',
 			racestate: '',
 			remaining: '',
@@ -129,7 +129,7 @@ export default {
 				this.data = JSON.parse(res.data);
 				this.dataLoaded = true;
 				this.showError = false;
-				this.updateInterval = 60;
+				this.updateInterval = 30;
 			}, () => {
 				// console.log(err);
 				this.showError = true;
