@@ -163,7 +163,7 @@ export default {
 			let hours = Math.floor(this.remaining / 3600);
 			if (hours < 10)
 				hours = '0' + hours;
-			let minutes = Math.floor(this.remaining / 60);
+			let minutes = Math.floor(this.remaining % (60*60));
 			if (minutes < 10)
 				minutes = '0' + minutes;
 			let seconds = this.remaining % 60;
@@ -296,7 +296,7 @@ body {
 }
 .text-info {
 	padding: 0.4em 0 0.4em 0;
-	font-size: 20px
+	font-size: 16px
 }
 .text-status {
 	padding: 0.4em 0 0.4em 0;
