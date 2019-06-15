@@ -34,9 +34,9 @@
 			<md-table-head>Driver</md-table-head>
 			<md-table-head>Car</md-table-head>
 			<md-table-head>Gap</md-table-head>
-			<md-table-head>GapPrev</md-table-head>
+			<md-table-head>Int</md-table-head>
 			<md-table-head>ClassGap</md-table-head>
-			<md-table-head>ClassGapPrev</md-table-head>
+			<md-table-head>ClassInt</md-table-head>
 			<md-table-head>S1</md-table-head>
 			<md-table-head>Best S1</md-table-head>
 			<md-table-head>S2</md-table-head>
@@ -60,13 +60,13 @@
 			<md-table-cell>{{ e.gapPrev }}</md-table-cell>
 			<md-table-cell>{{ e.classGap }}</md-table-cell>
 			<md-table-cell>{{ e.classGapPrev }}</md-table-cell>
-			<md-table-cell>{{ e.currentSector1 }}</md-table-cell>
+			<md-table-cell><strong>{{ e.currentSector1 }}</strong></md-table-cell>
 			<md-table-cell>{{ e.bestSector1 }}</md-table-cell>
-			<md-table-cell>{{ e.currentSector2 }}</md-table-cell>
+			<md-table-cell><strong>{{ e.currentSector2 }}</strong></md-table-cell>
 			<md-table-cell>{{ e.bestSector2 }}</md-table-cell>
-			<md-table-cell>{{ e.currentSector3 }}</md-table-cell>
+			<md-table-cell><strong>{{ e.currentSector3 }}</strong></md-table-cell>
 			<md-table-cell>{{ e.bestSector3 }}</md-table-cell>
-			<md-table-cell>{{ e.lastlap }}</md-table-cell>
+			<md-table-cell><strong>{{ e.lastlap }}</strong></md-table-cell>
 			<md-table-cell>{{ e.bestlap }}</md-table-cell>
 			<md-table-cell>{{ e.pitstop }}</md-table-cell>
 		</md-table-row>
@@ -109,6 +109,8 @@ export default {
 						this.racestate = 'RUNNING'; break;
 					case 'Chk':
 						this.racestate = 'FINISHED'; break;
+					case 'yellow':
+						this.racestate = 'LOCAL YELLOW'; break;
 					case 'full_yellow':
 						this.racestate = 'FCY'; break;
 					case 'off':
@@ -153,6 +155,8 @@ export default {
 					return 'state-green';
 				case 'Chk':
 					return 'state-finished';
+				case 'yellow':
+					return 'state-localyellow';
 				case 'full_yellow':
 					return 'state-yellow';
 				case 'off':
@@ -313,6 +317,10 @@ body {
 .state-yellow {
 	background-color: yellow;
 	color: black;
+}
+.state-localyellow {
+	background-color: green;
+	color: yellow;
 }
 .state-red {
 	background-color: red;
