@@ -26,7 +26,9 @@ fetchData = function() {
 
 		// The whole response has been received
 		response.on('end', () => {
-			data = JSON.parse(tmp);
+			let tmp2 = JSON.parse(tmp);
+			delete tmp2.driversResult;
+			data = JSON.stringify(tmp2);
 			// console.log('UPDATE FROM SOURCE AT ' + new Date());
 		});
 	}, err => {

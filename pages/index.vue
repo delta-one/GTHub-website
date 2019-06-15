@@ -8,7 +8,7 @@
 			{{ racestate }}
 		</div>
 		<div class="md-layout-item md-size-10 text-center text-info">
-			{{ remaining }} remaining
+			{{ remainingTime() }} remaining
 		</div>
 	</div>
 	<div class="class-badges">
@@ -21,7 +21,7 @@
 	<md-table v-if="data.entries !== undefined">
 		<md-table-row>
 			<md-table-head>Pos</md-table-head>
-			<md-table-head>ClassPos</md-table-head>
+			<md-table-head>PIC</md-table-head>
 			<md-table-head>State</md-table-head>
 			<md-table-head>Class</md-table-head>
 			<md-table-head>Nr</md-table-head>
@@ -32,12 +32,12 @@
 			<md-table-head>GapPrev</md-table-head>
 			<md-table-head>ClassGap</md-table-head>
 			<md-table-head>ClassGapPrev</md-table-head>
-			<md-table-head>Sector 1</md-table-head>
-			<md-table-head>Best Sector 1</md-table-head>
-			<md-table-head>Sector 2</md-table-head>
-			<md-table-head>Best Sector 2</md-table-head>
-			<md-table-head>Sector 3</md-table-head>
-			<md-table-head>Best Sector 3</md-table-head>
+			<md-table-head>S1</md-table-head>
+			<md-table-head>Best S1</md-table-head>
+			<md-table-head>S2</md-table-head>
+			<md-table-head>Best S2</md-table-head>
+			<md-table-head>S3</md-table-head>
+			<md-table-head>Best S3</md-table-head>
 			<md-table-head>Last Lap</md-table-head>
 			<md-table-head>Best Lap</md-table-head>
 			<md-table-head>Pitstops</md-table-head>
@@ -85,8 +85,8 @@ export default {
 		};
 	},
 	watch: {
-		data: function(newValue) {
-			if (newValue !== undefined) {
+		data: function() {
+			if (this.data.params !== undefined) {
 				this.elapsed = this.data.params.elapsedTime;
 				this.remaining = this.data.params.remaining;
 				// TODO, need to know the strings for yellow/red/etc.
@@ -95,6 +95,8 @@ export default {
 						this.racestate = 'RUNNING'; break;
 					case 'Chk':
 						this.racestate = 'FINISHED'; break;
+					case 'off':
+						this.racestate = 'NOT RUNNING'; break;
 					default:
 						this.racestate = 'unknown';
 				}
@@ -108,7 +110,7 @@ export default {
 	methods: {
 		async sendRequest() {
 			const res = await this.$axios.$get('/api/wecdata', {crossdomain: true});
-			this.data = res.data;
+			this.data = JSON.parse(res.data);
 		},
 		fetchData: function() {
 			setInterval(() => {
@@ -119,13 +121,30 @@ export default {
 			if (this.data.params === undefined)
 				return '';
 			switch (this.data.params.racestate) {
+				// TODO, need to know the strings for yellow/red/etc.
 				case 'green':
 					return 'state-green';
 				case 'Chk':
 					return 'state-finished';
+				case 'off':
+					return 'state-off';
 				default:
 					return '';
 			}
+		},
+		remainingTime: function() {
+			if (this.data.params === undefined)
+				return '00:00:00';
+			let hours = Math.floor(this.remaining / 3600);
+			if (hours < 10)
+				hours = '0' + hours;
+			let minutes = Math.floor(this.remaining / 60);
+			if (minutes < 10)
+				minutes = '0' + minutes;
+			let seconds = this.remaining % 60;
+			if (seconds < 10)
+				seconds = '0' + seconds;
+			return hours + ':' + minutes + ':' + seconds;
 		},
 		classBg: function(cat) {
 			switch (cat) {
@@ -263,6 +282,9 @@ body {
 }
 .state-red {
 	background-color: red;
+}
+.state-off {
+	background-color: black;
 }
 .state-finished {
 	background-image:
