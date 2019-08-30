@@ -16,11 +16,21 @@
 	</div>
 	<div class="md-layout">
 		<div class="md-layout-item class-badges">
-			<md-chip md-clickable @click.native="badgeClicked('all')" :class="clb_all ? 'all-bg' : ''">All classes</md-chip>
-			<md-chip md-clickable @click.native="badgeClicked('p1')" :class="clb_p1 ? 'lmp1-bg' : ''">LMP1</md-chip>
-			<md-chip md-clickable @click.native="badgeClicked('p2')" :class="clb_p2 ? 'lmp2-bg' : ''">LMP2</md-chip>
-			<md-chip md-clickable @click.native="badgeClicked('gp')" :class="clb_gp ? 'gtepro-bg' : ''">GTE-Pro</md-chip>
-			<md-chip md-clickable @click.native="badgeClicked('ga')" :class="clb_ga ? 'gteam-bg' : ''">GTE-Am</md-chip>
+			<md-chip md-clickable :class="clb_all ? 'all-bg' : ''" @click.native="badgeClicked('all')">
+				All classes
+			</md-chip>
+			<md-chip md-clickable :class="clb_p1 ? 'lmp1-bg' : ''" @click.native="badgeClicked('p1')">
+				LMP1
+			</md-chip>
+			<md-chip md-clickable :class="clb_p2 ? 'lmp2-bg' : ''" @click.native="badgeClicked('p2')">
+				LMP2
+			</md-chip>
+			<md-chip md-clickable :class="clb_gp ? 'gtepro-bg' : ''" @click.native="badgeClicked('gp')">
+				GTE-Pro
+			</md-chip>
+			<md-chip md-clickable :class="clb_ga ? 'gteam-bg' : ''" @click.native="badgeClicked('ga')">
+				GTE-Am
+			</md-chip>
 		</div>
 		<div class="md-layout-item text-right">
 			Last update: {{ new Date().toLocaleString() }}
@@ -53,7 +63,9 @@
 		<md-table-row v-for="(e, index) in filterEntries()" :key="e.number" :class="tableRowClass(index, e.state)">
 			<md-table-cell>{{ e.ranking }}</md-table-cell>
 			<md-table-cell>{{ e.categoryPosition }}</md-table-cell>
-			<md-table-cell :class="stateColour(e.state)">{{ e.state !== 'Chk' ? e.state.toUpperCase() : '' }}</md-table-cell>
+			<md-table-cell :class="stateColour(e.state)">
+				{{ e.state !== 'Chk' ? e.state.toUpperCase() : '' }}
+			</md-table-cell>
 			<md-table-cell><span :class="classBg(e.category)">{{ classDisplay(e.category) }}</span></md-table-cell>
 			<md-table-cell>{{ e.number }}</md-table-cell>
 			<md-table-cell>{{ e.team }}</md-table-cell>
