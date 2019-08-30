@@ -1,13 +1,13 @@
 <template>
 <div v-if="dataLoaded">
-	<div class="md-layout" style="margin-bottom: 0em">
+	<div class="md-layout">
 		<div class="md-layout-item md-size-15 text-center">
 			<a href="http://gthub.eu" class="logoref">
 				<img class="logo" src="~/assets/img/GTHubNoBackground.svg" alt="GTHub's logo" />
 			</a>
 		</div>
 		<div class="md-layout-item text-center text-status" :class="racestateBg()">
-			{{ racestate }}
+			{{ data.params.eventName }} - {{ racestate }}
 		</div>
 		<div class="md-layout-item md-size-15 text-center text-info">
 			<!-- {{ elapsed }} elapsed<br /> -->
@@ -298,7 +298,7 @@ export default {
 
 <style>
 body {
-	padding: 1em
+	padding: 0 1em 1em 1em;
 }
 
 .text-center {
