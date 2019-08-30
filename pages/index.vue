@@ -1,13 +1,16 @@
 <template>
 <div v-if="dataLoaded">
-	<div class="md-layout">
-		<div class="md-layout-item md-size-10 text-center text-info">
-			{{ elapsed }} elapsed
+	<div class="md-layout" style="margin-bottom: 0em">
+		<div class="md-layout-item md-size-15 text-center">
+			<a href="http://gthub.eu" class="logoref">
+				<img class="logo" src="~/assets/img/GTHubNoBackground.svg" alt="GTHub's logo" />
+			</a>
 		</div>
-		<div class="md-layout-item text-cente text-center text-status" :class="racestateBg()">
+		<div class="md-layout-item text-center text-status" :class="racestateBg()">
 			{{ racestate }}
 		</div>
-		<div class="md-layout-item md-size-10 text-center text-info">
+		<div class="md-layout-item md-size-15 text-center text-info">
+			<!-- {{ elapsed }} elapsed<br /> -->
 			{{ remainingTime() }} remaining
 		</div>
 	</div>
@@ -308,7 +311,9 @@ body {
 }
 .text-info {
 	padding: 0.4em 0 0.4em 0;
-	font-size: 16px
+	font-size: 1.5em;
+	line-height: 1.5em;
+	max-height: 5em;
 }
 .text-status {
 	padding: 0.4em 0 0.4em 0;
@@ -407,5 +412,13 @@ body {
 }
 .state-run {
 	color: #76FF03
+}
+.logo {
+	height: 100%;
+	min-width: 10em;
+	max-width: 10em;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	width: auto;
 }
 </style>
