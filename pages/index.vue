@@ -130,6 +130,8 @@ export default {
 						this.racestate = 'FCY'; break;
 					case 'safety_car':
 						this.racestate = 'SAFETY CAR'; break;
+					case 'red':
+						this.racestate = 'RED FLAG'; break;
 					case 'off':
 						this.racestate = 'NOT RUNNING'; break;
 					default:
@@ -178,6 +180,8 @@ export default {
 					return 'state-yellow';
 				case 'safety_car':
 					return 'state-sc';
+				case 'red':
+					return 'state-red';
 				case 'off':
 					return 'state-off';
 				default:
