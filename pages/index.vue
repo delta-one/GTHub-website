@@ -11,7 +11,7 @@
 		</div>
 		<div class="md-layout-item md-size-15 text-center text-info">
 			<!-- {{ elapsed }} elapsed<br /> -->
-			{{ remainingTime() }} remaining
+			{{ remainingTimeDisplay }} remaining
 		</div>
 	</div>
 	<div class="md-layout">
@@ -32,9 +32,9 @@
 				GTE-Am
 			</md-chip>
 		</div>
-		<div class="md-layout-item text-right">
+		<!-- <div class="md-layout-item text-right">
 			Last update: {{ new Date().toLocaleString() }}
-		</div>
+		</div> -->
 	</div>
 	<md-table v-if="data.entries !== undefined">
 		<md-table-row>
@@ -101,11 +101,15 @@ export default {
 		return {
 			data: [],
 			dataLoaded: false,
+			initialLoad: false,
+			tmpInt: 0,
 			showError: false,
 			updateInterval: 30,
 			elapsed: '',
 			racestate: '',
 			remaining: '',
+			remainingTime: '',
+			remainingTimeDisplay: '',
 			clb_all: true,
 			clb_p1: false,
 			clb_p2: false,
@@ -118,7 +122,7 @@ export default {
 			if (this.data.params !== undefined) {
 				this.elapsed = this.data.params.elapsedTime;
 				this.remaining = this.data.params.remaining;
-				// TODO, need to know the strings for yellow/red/etc.
+				this.remainingTime = this.remaining;
 				switch(this.data.params.racestate) {
 					case 'green':
 						this.racestate = 'RUNNING'; break;
@@ -143,6 +147,7 @@ export default {
 	created() {
 		this.sendRequest();
 		this.fetchData();
+		this.tickDown();
 	},
 	methods: {
 		async sendRequest() {
@@ -151,6 +156,7 @@ export default {
 			.then(res => {
 				this.data = JSON.parse(res.data);
 				this.dataLoaded = true;
+				this.initialLoad = true;
 				this.showError = false;
 				this.updateInterval = 30;
 			}, () => {
@@ -165,11 +171,34 @@ export default {
 				this.sendRequest();
 			}, this.updateInterval * 1000);
 		},
+		tickDown: function() {
+			setInterval(() => {
+				if (this.initialLoad && this.dataLoaded)
+					this.updateRemainingTime();
+			}, 1000);
+		},
+		updateRemainingTime: function() {
+			this.remainingTime--;
+			if (this.remainingTime === undefined || this.remainingTime <= 0) {
+				this.remainingTimeDisplay = '0';
+				return;
+			}
+
+			let hours = Math.floor(this.remainingTime / 3600);
+			if (hours < 10)
+				hours = '0' + hours;
+			let minutes = Math.floor((this.remainingTime / 60) % 60);
+			if (minutes < 10)
+				minutes = '0' + minutes;
+			let seconds = this.remainingTime % 60;
+			if (seconds < 10)
+				seconds = '0' + seconds;
+			this.remainingTimeDisplay = hours + ':' + minutes + ':' + seconds;
+		},
 		racestateBg: function() {
 			if (this.data.params === undefined)
 				return '';
 			switch (this.data.params.racestate) {
-				// TODO, need to know the strings for yellow/red/etc.
 				case 'green':
 					return 'state-green';
 				case 'Chk':
@@ -187,20 +216,6 @@ export default {
 				default:
 					return '';
 			}
-		},
-		remainingTime: function() {
-			if (this.data.params === undefined || this.remaining <= 0)
-				return '00:00:00';
-			let hours = Math.floor(this.remaining / 3600);
-			if (hours < 10)
-				hours = '0' + hours;
-			let minutes = Math.floor((this.remaining / 60) % 60);
-			if (minutes < 10)
-				minutes = '0' + minutes;
-			let seconds = this.remaining % 60;
-			if (seconds < 10)
-				seconds = '0' + seconds;
-			return hours + ':' + minutes + ':' + seconds;
 		},
 		classBg: function(cat) {
 			switch (cat) {
