@@ -104,7 +104,7 @@ export default {
 			initialLoad: false,
 			tmpInt: 0,
 			showError: false,
-			updateInterval: 30,
+			updateInterval: 10,
 			elapsed: '',
 			racestate: '',
 			remaining: '',
