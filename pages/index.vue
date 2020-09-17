@@ -11,7 +11,7 @@
 		</div>
 		<div class="md-layout-item md-size-15 text-center text-info">
 			<!-- {{ elapsed }} elapsed<br /> -->
-			{{ remainingTimeDisplay }} remaining
+			{{ getRemainingTime() }}
 		</div>
 	</div>
 	<div class="md-layout">
@@ -147,7 +147,6 @@ export default {
 	created() {
 		this.sendRequest();
 		this.fetchData();
-		this.tickDown();
 	},
 	methods: {
 		async sendRequest() {
@@ -163,7 +162,7 @@ export default {
 				// console.log(err);
 				this.showError = true;
 				this.dataLoaded = false;
-				this.updateInterval = 180;
+				this.updateInterval = 120;
 			});
 		},
 		fetchData: function() {
@@ -172,16 +171,38 @@ export default {
 			}, this.updateInterval * 1000);
 		},
 		tickDown: function() {
-			setInterval(() => {
-				if (this.initialLoad && this.dataLoaded)
-					this.updateRemainingTime();
-			}, 1000);
+			// setInterval(() => {
+			// 	// const rT = this.remainingTime;
+			// 	// if (this.initialLoad && this.dataLoaded) {
+			// 	// 	const t = this.updateRemainingTime(rT);
+			// 	// 	this.remainingTimeDisplay = t.repeat(1);
+			// 	// }
+			// }, 1000);
 		},
-		updateRemainingTime: function() {
+		updateRemainingTime: function(remainingTime) {
 			this.remainingTime--;
+			if (remainingTime === undefined || remainingTime <= 0) {
+				// this.remainingTimeDisplay = '0:00:00';
+				return '0:00:00';
+			}
+
+			let hours = Math.floor(remainingTime / 3600);
+			if (hours < 10)
+				hours = '0' + hours;
+			let minutes = Math.floor((remainingTime / 60) % 60);
+			if (minutes < 10)
+				minutes = '0' + minutes;
+			let seconds = remainingTime % 60;
+			if (seconds < 10)
+				seconds = '0' + seconds;
+			// this.remainingTimeDisplay = hours + ':' + minutes + ':' + seconds;
+			return hours + ':' + minutes + ':' + seconds;
+		},
+		getRemainingTime: function() {
+			// this.remainingTime--;
 			if (this.remainingTime === undefined || this.remainingTime <= 0) {
-				this.remainingTimeDisplay = '0';
-				return;
+				// this.remainingTimeDisplay = '0:00:00';
+				return '0:00:00';
 			}
 
 			let hours = Math.floor(this.remainingTime / 3600);
@@ -193,7 +214,8 @@ export default {
 			let seconds = this.remainingTime % 60;
 			if (seconds < 10)
 				seconds = '0' + seconds;
-			this.remainingTimeDisplay = hours + ':' + minutes + ':' + seconds;
+			// this.remainingTimeDisplay = hours + ':' + minutes + ':' + seconds;
+			return hours + ':' + minutes + ':' + seconds;
 		},
 		racestateBg: function() {
 			if (this.data.params === undefined)
@@ -350,6 +372,7 @@ body {
 	padding: 0.4em 0 0.4em 0;
 	font-size: 24px;
 	font-weight: bold;
+	border-radius: 10px;
 }
 .state-green {
 	background-color: green;
@@ -408,22 +431,26 @@ body {
 .lmp1-bg {
 	background-color: red !important;
 	padding: 0.3em;
-	font-weight: bold
+	font-weight: bold;
+	border-radius: 7px;
 }
 .lmp2-bg {
 	background-color: blue !important;
 	padding: 0.3em;
-	font-weight: bold
+	font-weight: bold;
+	border-radius: 7px;
 }
 .gtepro-bg {
 	background-color: green !important;
 	padding: 0.3em;
-	font-weight: bold
+	font-weight: bold;
+	border-radius: 7px;
 }
 .gteam-bg {
 	background-color: orange !important;
 	padding: 0.3em;
-	font-weight: bold
+	font-weight: bold;
+	border-radius: 7px;
 }
 .md-table-cell-container {
 	padding: 0.4em 0.4em 0.4em 0.4em
