@@ -104,7 +104,7 @@ export default {
 			initialLoad: false,
 			tmpInt: 0,
 			showError: false,
-			updateInterval: 10,
+			updateInterval: 5,
 			elapsed: '',
 			racestate: '',
 			remaining: '',
@@ -157,7 +157,7 @@ export default {
 				this.dataLoaded = true;
 				this.initialLoad = true;
 				this.showError = false;
-				this.updateInterval = 30;
+				this.updateInterval = 5;
 			}, () => {
 				// console.log(err);
 				this.showError = true;
