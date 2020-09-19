@@ -11,7 +11,11 @@
 		</div>
 		<div class="md-layout-item md-size-15 text-center text-info">
 			<!-- {{ elapsed }} elapsed<br /> -->
-			{{ getRemainingTime() }}
+			{{ getRemainingTime() }} left
+			<br />
+			{{ weatherInfo }}
+			<br />
+			{{ trackTemp }}
 		</div>
 	</div>
 	<div class="md-layout">
@@ -110,6 +114,8 @@ export default {
 			remaining: '',
 			remainingTime: '',
 			remainingTimeDisplay: '',
+			weatherInfo: '',
+			trackTemp: '',
 			clb_all: true,
 			clb_p1: false,
 			clb_p2: false,
@@ -123,6 +129,8 @@ export default {
 				this.elapsed = this.data.params.elapsedTime;
 				this.remaining = this.data.params.remaining;
 				this.remainingTime = this.remaining;
+				this.weatherInfo = 'Air temp: ' + this.data.params.airTemp + '°C (' + this.data.params.weather + ')';
+				this.trackTemp = 'Track temp: ' + this.data.params.trackTemp + '°C';
 				switch(this.data.params.racestate) {
 					case 'green':
 						this.racestate = 'RUNNING'; break;
