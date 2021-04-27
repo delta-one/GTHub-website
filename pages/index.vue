@@ -24,7 +24,7 @@
 				All classes
 			</md-chip>
 			<md-chip md-clickable :class="clb_p1 ? 'lmp1-bg' : ''" @click.native="badgeClicked('p1')">
-				LMP1
+				HYPERCAR
 			</md-chip>
 			<md-chip md-clickable :class="clb_p2 ? 'lmp2-bg' : ''" @click.native="badgeClicked('p2')">
 				LMP2
@@ -250,6 +250,7 @@ export default {
 		classBg: function(cat) {
 			switch (cat) {
 				case 'LMP1':
+				case 'HYPERCAR':
 					return 'lmp1-bg';
 				case 'LMP2':
 					return 'lmp2-bg';
@@ -296,7 +297,7 @@ export default {
 				let arr = [];
 				if (this.clb_p1)
 					arr = arr.concat(this.data.entries.filter(function(entry) {
-						return entry.category === 'LMP1';
+						return entry.category === 'HYPERCAR';
 					}));
 				if (this.clb_p2)
 					arr = arr.concat(this.data.entries.filter(function(entry) {

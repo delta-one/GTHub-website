@@ -13,7 +13,7 @@ module.exports.getWecData = (req, res) => {
 
 setInterval(() => {
 	fetchData();
-}, 5 * 1000);
+}, 10 * 1000);
 
 fetchData = function() {
 	let rn = Math.random();
